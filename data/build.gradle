@@ -1,0 +1,65 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion max_sdk
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        minSdkVersion min_sdk
+        targetSdkVersion max_sdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation project("::domain")
+
+    //Retrofit
+    api "com.squareup.okhttp3:okhttp:$okhttp"
+    api "com.squareup.retrofit2:retrofit:$retrofit"
+    api "com.squareup.retrofit2:converter-gson:$converter_gson"
+    api "com.squareup.okhttp3:logging-interceptor:$logging_interceptor"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$coroutines_adapter"
+
+    //Room
+    api "androidx.room:room-runtime:$room_runtime"
+    implementation 'androidx.test:monitor:1.6.1'
+    implementation 'androidx.test.ext:junit-ktx:1.1.5'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'junit:junit:4.12'
+    kapt "androidx.room:room-compiler:$room_compiler"
+
+    //Coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_core"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_android"
+
+    //Hyperion
+    debugImplementation "com.readystatesoftware.chuck:library:$readystatesoftware_chuck"
+
+    //AWS
+    implementation 'com.amazonaws:aws-android-sdk-cognito:2.10.1'
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.10.1'
+    implementation 'com.amazonaws:aws-android-sdk-mobile-client:2.10.1'
+}
